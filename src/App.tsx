@@ -43,17 +43,19 @@ const App = () => {
   const [editingSupplier, setEditingSupplier] = useState<any>(null);
   const [supplierSearchTerm, setSupplierSearchTerm] = useState('');
   const [selectedSupplier, setSelectedSupplier] = useState<any>(null);
-  const [shopProfile] = useState({
+  const [shopProfile, setShopProfile] = useState({
     shopName: 'SHREE GANESH TRADERS',
     ownerName: 'Rajesh Kumar',
     address: '123 Main Street, Mumbai, Maharashtra',
     phone: '9876543210',
+    email: 'info@shreeganeshtraders.com',
     gstin: '27AABCCDDEEFFG'
   });
   const [mastersTab, setMastersTab] = useState('products');
   const [currentInvoice, setCurrentInvoice] = useState<any>(null);
   const [currentPurchaseInvoice, setCurrentPurchaseInvoice] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [settingsTab, setSettingsTab] = useState('theme');
 
   useEffect(() => {
     loadData();
@@ -556,7 +558,7 @@ const App = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
-              <Store className="text-blue-500 mr-3" size={32} />
+              <Store className="text-purple-500 mr-3" size={32} />
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Easy-Retail</h1>
             </div>
             <div className="flex items-center space-x-4">
@@ -584,7 +586,7 @@ const App = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center px-3 py-4 text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
                   activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    ? 'border-purple-500 text-purple-600 dark:text-purple-400'
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
                 }`}
               >
@@ -678,33 +680,147 @@ const App = () => {
         )}
 
         {activeTab === 'settings' && (
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">Theme Settings</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div
-                onClick={() => setTheme('light')}
-                className={`border-2 rounded-xl p-6 cursor-pointer transition-all ${
-                  theme === 'light' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
-                }`}
-              >
-                <div className="flex items-center mb-3">
-                  <Sun className="text-yellow-500 mr-3" size={28} />
-                  <h4 className="font-bold text-gray-800">Light Theme</h4>
-                </div>
-                <p className="text-sm text-gray-600">Bright interface</p>
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+              <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
+                <button
+                  onClick={() => setSettingsTab('theme')}
+                  className={`px-4 py-2 font-medium ${
+                    settingsTab === 'theme'
+                      ? 'border-b-2 border-purple-500 text-purple-600 dark:text-purple-400'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                >
+                  Theme
+                </button>
+                <button
+                  onClick={() => setSettingsTab('profile')}
+                  className={`px-4 py-2 font-medium ${
+                    settingsTab === 'profile'
+                      ? 'border-b-2 border-purple-500 text-purple-600 dark:text-purple-400'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                >
+                  Shop Profile
+                </button>
               </div>
-              <div
-                onClick={() => setTheme('dark')}
-                className={`border-2 rounded-xl p-6 cursor-pointer transition-all ${
-                  theme === 'dark' ? 'border-blue-500 bg-gray-800' : 'border-gray-200'
-                }`}
-              >
-                <div className="flex items-center mb-3">
-                  <Moon className="text-indigo-400 mr-3" size={28} />
-                  <h4 className="font-bold text-gray-800 dark:text-white">Dark Theme</h4>
+
+              {settingsTab === 'theme' && (
+                <div>
+                  <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">Select Theme</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div
+                      onClick={() => setTheme('light')}
+                      className={`border-2 rounded-xl p-6 cursor-pointer transition-all transform hover:scale-105 ${
+                        theme === 'light'
+                          ? 'border-purple-500 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-gray-700 dark:to-gray-800 shadow-lg'
+                          : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                      }`}
+                    >
+                      <div className="flex items-center mb-3">
+                        <Sun className="text-yellow-500 mr-3" size={28} />
+                        <h4 className="font-bold text-gray-800 dark:text-white text-lg">Light Theme</h4>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">Bright and clean interface with white backgrounds</p>
+                      <div className="mt-4 flex space-x-2">
+                        <div className="w-6 h-6 rounded-full bg-white border border-gray-300"></div>
+                        <div className="w-6 h-6 rounded-full bg-purple-500"></div>
+                        <div className="w-6 h-6 rounded-full bg-gray-200"></div>
+                      </div>
+                    </div>
+                    <div
+                      onClick={() => setTheme('dark')}
+                      className={`border-2 rounded-xl p-6 cursor-pointer transition-all transform hover:scale-105 ${
+                        theme === 'dark'
+                          ? 'border-purple-500 bg-gradient-to-br from-gray-800 to-gray-900 shadow-lg'
+                          : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                      }`}
+                    >
+                      <div className="flex items-center mb-3">
+                        <Moon className="text-indigo-400 mr-3" size={28} />
+                        <h4 className="font-bold text-gray-800 dark:text-white text-lg">Dark Theme</h4>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">Easy on the eyes with dark backgrounds</p>
+                      <div className="mt-4 flex space-x-2">
+                        <div className="w-6 h-6 rounded-full bg-gray-800 border border-gray-700"></div>
+                        <div className="w-6 h-6 rounded-full bg-purple-500"></div>
+                        <div className="w-6 h-6 rounded-full bg-gray-700"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Easy on eyes</p>
-              </div>
+              )}
+
+              {settingsTab === 'profile' && (
+                <div>
+                  <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">Shop Profile</h2>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Shop Name</label>
+                      <input
+                        type="text"
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                        value={shopProfile.shopName}
+                        onChange={(e) => setShopProfile({ ...shopProfile, shopName: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Owner Name</label>
+                      <input
+                        type="text"
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                        value={shopProfile.ownerName}
+                        onChange={(e) => setShopProfile({ ...shopProfile, ownerName: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address</label>
+                      <textarea
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                        rows={3}
+                        value={shopProfile.address}
+                        onChange={(e) => setShopProfile({ ...shopProfile, address: e.target.value })}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
+                        <input
+                          type="text"
+                          className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                          value={shopProfile.phone}
+                          onChange={(e) => setShopProfile({ ...shopProfile, phone: e.target.value })}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                        <input
+                          type="email"
+                          className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                          value={shopProfile.email}
+                          onChange={(e) => setShopProfile({ ...shopProfile, email: e.target.value })}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">GSTIN</label>
+                      <input
+                        type="text"
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                        value={shopProfile.gstin}
+                        onChange={(e) => setShopProfile({ ...shopProfile, gstin: e.target.value })}
+                      />
+                    </div>
+                    <button
+                      onClick={() => alert('Shop profile updated successfully!')}
+                      className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-6 py-2 rounded-lg hover:from-purple-600 hover:to-indigo-700 flex items-center transition-all shadow-md"
+                    >
+                      <Store className="mr-2" size={16} />
+                      Update Profile
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
