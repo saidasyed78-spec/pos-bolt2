@@ -673,6 +673,7 @@ const App = () => {
           <ReportsTab
             salesReport={salesReport}
             purchaseReport={purchaseReport}
+            products={products}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             exportToExcel={exportToExcel}

@@ -1,9 +1,11 @@
 import React from 'react';
-import { BarChart2, Download, PackagePlus, FileText } from 'lucide-react';
+import { BarChart2, Download, PackagePlus, FileText, Package } from 'lucide-react';
+import { Product } from '../services/database';
 
 interface ReportsTabProps {
   salesReport: any[];
   purchaseReport: any[];
+  products: Product[];
   selectedDate: string;
   setSelectedDate: (date: string) => void;
   exportToExcel: (data: any[], filename: string) => void;
@@ -12,6 +14,7 @@ interface ReportsTabProps {
 export const ReportsTab: React.FC<ReportsTabProps> = ({
   salesReport,
   purchaseReport,
+  products,
   selectedDate,
   setSelectedDate,
   exportToExcel
@@ -22,8 +25,94 @@ export const ReportsTab: React.FC<ReportsTabProps> = ({
 
   const allTransactions = [...salesReport.map(s => ({ ...s, type: 'sale' })), ...purchaseReport.map(p => ({ ...p, type: 'purchase' }))];
 
+  const getTotalInventoryValue = () => {
+    return products.reduce((total, product) => total + (product.price * product.stock), 0);
+  };
+
+  const getLowStockProducts = () => {
+    return products.filter(product => product.stock < 10);
+  };
+
+  const getOutOfStockProducts = () => {
+    return products.filter(product => product.stock === 0);
+  };
+
   return (
     <div className="space-y-6">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold flex items-center text-gray-800 dark:text-white">
+            <Package className="mr-2 text-purple-500" size={20} />
+            Inventory Report
+          </h2>
+          <button
+            onClick={() => exportToExcel(products, 'inventory_report')}
+            className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-lg hover:from-green-600 hover:to-emerald-700 flex items-center transition-all shadow-md"
+          >
+            <Download className="mr-2" size={16} />
+            Export to Excel
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900 dark:to-indigo-900 p-4 rounded-lg">
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">Total Products</h3>
+            <p className="text-2xl font-bold text-gray-800 dark:text-white">{products.length}</p>
+          </div>
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900 dark:to-emerald-900 p-4 rounded-lg">
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">Total Inventory Value</h3>
+            <p className="text-2xl font-bold text-gray-800 dark:text-white">₹{getTotalInventoryValue().toFixed(2)}</p>
+          </div>
+          <div className="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900 dark:to-orange-900 p-4 rounded-lg">
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">Low Stock Items</h3>
+            <p className="text-2xl font-bold text-gray-800 dark:text-white">{getLowStockProducts().length}</p>
+          </div>
+          <div className="bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-900 dark:to-pink-900 p-4 rounded-lg">
+            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">Out of Stock</h3>
+            <p className="text-2xl font-bold text-gray-800 dark:text-white">{getOutOfStockProducts().length}</p>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 dark:bg-gray-700">
+              <tr>
+                <th className="text-left p-3 text-gray-800 dark:text-white">Product Name</th>
+                <th className="text-left p-3 text-gray-800 dark:text-white">Category</th>
+                <th className="text-left p-3 text-gray-800 dark:text-white">Barcode</th>
+                <th className="text-left p-3 text-gray-800 dark:text-white">Price</th>
+                <th className="text-left p-3 text-gray-800 dark:text-white">Stock</th>
+                <th className="text-left p-3 text-gray-800 dark:text-white">Value</th>
+                <th className="text-left p-3 text-gray-800 dark:text-white">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map(product => (
+                <tr key={product.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                  <td className="p-3 text-gray-800 dark:text-white font-medium">{product.name}</td>
+                  <td className="p-3 text-gray-800 dark:text-white">{product.category}</td>
+                  <td className="p-3 text-gray-800 dark:text-white">{product.barcode}</td>
+                  <td className="p-3 text-gray-800 dark:text-white">₹{product.price.toFixed(2)}</td>
+                  <td className="p-3 text-gray-800 dark:text-white font-semibold">{product.stock}</td>
+                  <td className="p-3 text-gray-800 dark:text-white">₹{(product.price * product.stock).toFixed(2)}</td>
+                  <td className="p-3">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      product.stock === 0
+                        ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                        : product.stock < 10
+                        ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                        : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                    }`}>
+                      {product.stock === 0 ? 'Out of Stock' : product.stock < 10 ? 'Low Stock' : 'In Stock'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold flex items-center text-gray-800 dark:text-white">
