@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, PackagePlus, User, BarChart2, Settings, Store, CircleUser as UserCircle, Moon, Sun, Printer, QrCode } from 'lucide-react';
+import { ShoppingCart, PackagePlus, User, BarChart2, Settings, Store, UserCircle, Moon, Sun, Printer, QrCode } from 'lucide-react';
 import { db, Product, Supplier, Category, GstRate } from './services/database';
 import { BillingTab } from './components/BillingTab';
 import { MastersTab } from './components/MastersTab';
