@@ -15,6 +15,7 @@ export interface Supplier {
   name: string;
   address: string;
   gst_no: string;
+  phone: string;
   opening_balance: number;
   balance_type: string;
 }
@@ -265,6 +266,35 @@ export const db = {
         .maybeSingle();
       if (error) throw error;
       return data ? data.invoice_number + 1 : 2001;
+    }
+  },
+
+  shopProfile: {
+    async getAll() {
+      const { data, error } = await supabase
+        .from('shop_profile')
+        .select('*');
+      if (error) throw error;
+      return data || [];
+    },
+    async create(profile: any) {
+      const { data, error } = await supabase
+        .from('shop_profile')
+        .insert(profile)
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    async update(id: string, profile: any) {
+      const { data, error } = await supabase
+        .from('shop_profile')
+        .update({ ...profile, updated_at: new Date().toISOString() })
+        .eq('id', id)
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
     }
   }
 };

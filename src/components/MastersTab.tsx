@@ -322,6 +322,13 @@ export const MastersTab: React.FC<MastersTabProps> = (props) => {
                   value={props.newSupplier.gst_no}
                   onChange={(e) => props.setNewSupplier({ ...props.newSupplier, gst_no: e.target.value })}
                 />
+                <input
+                  type="text"
+                  placeholder="Phone Number"
+                  className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  value={props.newSupplier.phone}
+                  onChange={(e) => props.setNewSupplier({ ...props.newSupplier, phone: e.target.value })}
+                />
                 <div className="grid grid-cols-2 gap-3">
                   <input
                     type="number"
@@ -359,6 +366,7 @@ export const MastersTab: React.FC<MastersTabProps> = (props) => {
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
                       <th className="text-left p-3 text-gray-800 dark:text-white">Name</th>
+                      <th className="text-left p-3 text-gray-800 dark:text-white">Phone</th>
                       <th className="text-left p-3 text-gray-800 dark:text-white">Address</th>
                       <th className="text-left p-3 text-gray-800 dark:text-white">GST Number</th>
                       <th className="text-left p-3 text-gray-800 dark:text-white">Opening Balance</th>
@@ -369,6 +377,7 @@ export const MastersTab: React.FC<MastersTabProps> = (props) => {
                     {filteredSuppliers.map(supplier => (
                       <tr key={supplier.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                         <td className="p-3 text-gray-800 dark:text-white">{supplier.name}</td>
+                        <td className="p-3 text-gray-800 dark:text-white">{supplier.phone}</td>
                         <td className="p-3 text-gray-800 dark:text-white">{supplier.address}</td>
                         <td className="p-3 text-gray-800 dark:text-white">{supplier.gst_no}</td>
                         <td className="p-3 text-gray-800 dark:text-white">₹{supplier.opening_balance} ({supplier.balance_type})</td>

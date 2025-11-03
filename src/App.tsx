@@ -39,7 +39,7 @@ const App = () => {
   const [newGstRate, setNewGstRate] = useState({ rate: '', description: '' });
   const [editingCategory, setEditingCategory] = useState<any>(null);
   const [editingGstRate, setEditingGstRate] = useState<any>(null);
-  const [newSupplier, setNewSupplier] = useState({ name: '', address: '', gst_no: '', opening_balance: '', balance_type: 'Credit' });
+  const [newSupplier, setNewSupplier] = useState({ name: '', address: '', gst_no: '', phone: '', opening_balance: '', balance_type: 'Credit' });
   const [editingSupplier, setEditingSupplier] = useState<any>(null);
   const [supplierSearchTerm, setSupplierSearchTerm] = useState('');
   const [selectedSupplier, setSelectedSupplier] = useState<any>(null);
@@ -225,13 +225,14 @@ const App = () => {
           name: newSupplier.name,
           address: newSupplier.address,
           gst_no: newSupplier.gst_no,
+          phone: newSupplier.phone,
           opening_balance: parseFloat(newSupplier.opening_balance) || 0,
           balance_type: newSupplier.balance_type
         };
 
         await db.suppliers.create(supplier);
         await loadData();
-        setNewSupplier({ name: '', address: '', gst_no: '', opening_balance: '', balance_type: 'Credit' });
+        setNewSupplier({ name: '', address: '', gst_no: '', phone: '', opening_balance: '', balance_type: 'Credit' });
       } catch (error) {
         console.error('Error adding supplier:', error);
         alert('Error adding supplier. Please try again.');
