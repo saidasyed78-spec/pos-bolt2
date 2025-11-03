@@ -828,6 +828,7 @@ const App = () => {
       </main>
 
       {showInvoice && renderInvoice()}
+      {showPurchaseInvoice && renderPurchaseInvoice()}
       {showLabelPrint && renderLabelPrint()}
     </div>
   );
